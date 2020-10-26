@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js">
+    <style media="screen">
+      body{
+        margin: 0;
+        box-sizing: border-box;
+        overflow: hidden;
+      }
+        canvas{
+          width: 100%;
+          height: 100%;
+        }
+      .buttons{
+        position: absolute;
+        display: flex;
+        width: 100%;
+        top: 50%;
+        align-items: center;
+        justify-content: space-around;
+        z-index: 10;
+
+      }
+      .buttons button{
+        height: 50px;
+        margin: 0px 500px;
+      }
+
+      #card_container{
+        position: absolute;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        flex-direction: column;
+      }
+      #content_container{
+        position: relative;
+        display: grid;
+        background-color: rgba(0, 0, 0, 1);
+        padding: 10px;
+        height: 100px;
+        z-index: 50;
+      }
+
+
+      #card_image{
+        position: relative;
+
+        width: 50em;
+        object-fit: cover;
+        object-position: 50% 25%;
+        height: 300px;
+      }
+
+      #card_container button{
+        position: relative;
+        left: 405px;
+        top: 10px;
+        padding: 10px;
+        border: none;
+        background: none;
+        cursor: pointer;
+      }
+      #card_container div{
+        background-color: rgba(0, 0, 0, 0.50);
+        position: relative;
+
+        z-index: 5;
+
+        word-wrap: break-word;
+        width: 50em;
+        height: 250px;
+
+      }
+      #card_container div p{
+        padding: 10px;
+        color: #ffffff;
+        font-size: 35px;
+      }
+      #card_exit{
+        position: relative;
+        z-index: 20;
+      }
+
+    </style>
+  </head>
+  <body>
+
+    <div class="work" id='switch_view'>
+      <div class="work-content" id='content'>
+        <div class="buttons">
+          <button type="button" id="left-btn">Left Button</button>
+          <button type="button" id="right-btn">Right Button</button>
+        </div>
+        <script src="Actual_Cards.js"></script>
+      </div>
+
+    </div>
+
+
+  </body>
+</html>
