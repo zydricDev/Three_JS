@@ -7,9 +7,7 @@ export function cardContent(number){
   }else{
     let parent = document.getElementById('content');
     let container = document.createElement('div');
-
-    let content_container = document.createElement('div');
-
+    
     //let image_container = document.createElement('div');
     let image = document.createElement('img');
 
@@ -20,7 +18,6 @@ export function cardContent(number){
     let exit_icon = document.createElement('i');
 
     container.setAttribute('id','card_container');
-    content_container.setAttribute('id','content_container')
     image.setAttribute('id','card_image');
 
 
@@ -30,14 +27,12 @@ export function cardContent(number){
 
 
     parent.appendChild(container);
-
-    container.appendChild(content_container);
-    content_container.appendChild(exit_button);
+    container.appendChild(exit_button);
     exit_button.appendChild(exit_icon);
 
 
-    content_container.appendChild(image);
-    content_container.appendChild(desc_container);
+    container.appendChild(image);
+    container.appendChild(desc_container);
 
     desc_container.appendChild(desc);
 
