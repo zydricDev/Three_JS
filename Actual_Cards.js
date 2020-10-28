@@ -7,9 +7,17 @@ var mouse = new THREE.Vector2(), INTERSECTED;
 var counter = 0;
 var tracker = [];
 var card_light = [];
+var static_lights = [];
+var card_textures = ['test.png'];
 
 function indicator(e){
   if(e){
+    static_lights.forEach(light=>{
+      if(light.type != 'DirectionalLight'){
+        light.intensity = 0;
+      }
+
+    })
     if(e.path[0].id == 'left-btn' && counter == 0){
       card_switch_left();
       tracker.unshift(tracker.pop());
@@ -17,6 +25,7 @@ function indicator(e){
       card_switch_right();
       tracker.push(tracker.shift())
     }
+
   }
 }
 
@@ -47,6 +56,8 @@ function onDocumentMouseClick(e){
     let exit_btn = document.getElementById('card_exit');
     exit_btn.addEventListener('click',closeContent);
   }
+
+  //if its the other
 }
 
 
@@ -74,14 +85,14 @@ function init(){
 
 
   const plane_geometry = new THREE.PlaneBufferGeometry(4000,4000,8,8);
-  const plane_material = new THREE.MeshPhongMaterial({color: 0xD3D3D3, side: THREE.DoubleSide});
+  const plane_material = new THREE.MeshPhongMaterial({color: 0x00142b, side: THREE.DoubleSide});
   const plane = new THREE.Mesh(plane_geometry, plane_material);
   plane.receiveShadow = true;
 
 
-  plane.rotation.x = Math.PI / 2
-  scene.add(plane)
-  const light = new THREE.SpotLight( 0xffffff, 1, 1500, 50);
+  plane.rotation.x = Math.PI / 2;
+  scene.add(plane);
+
 
   const geometry = new THREE.BoxGeometry(300,500,1);
 
@@ -89,26 +100,28 @@ function init(){
   let radians = 1.6;
   for(let i=0; i<card_quantity; i++){
     tracker.push(i+1);
-    var object = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({color: 0x0000ff  }));
+    var object = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({
+      color: 0x8da8c7,
+      map: new THREE.TextureLoader().load("test.png") }));
+
     object.receiveShadow = true;
     object.castShadow = true;
     var xSub = 800;
     var ySub = 0;
 
-    var xSub2 = xSub * Math.cos(radians) - Math.sin(radians) * ySub
-    var ySub2 = xSub * Math.sin(radians) + Math.cos(radians) * ySub
+    var xSub2 = xSub * Math.cos(radians) - Math.sin(radians) * ySub;
+    var ySub2 = xSub * Math.sin(radians) + Math.cos(radians) * ySub;
 
     object.position.x = xSub2;
     object.position.y = 300;
     object.position.z = ySub2;
     object.name = i+1;
-    object.rotation.z += 10;
+    object.rotation.z -= 0.5;
     scene.add(object);
-    radians += 2*Math.PI / card_quantity
+    radians += 2*Math.PI / card_quantity;
 
-    card_light.push(new THREE.SpotLight( 0xffffff, 1, 1500, 50))
-    card_light[i].target = object
-    card_light[i].rotation.set(4,4,4)
+    card_light.push(new THREE.SpotLight( 0xffffff, 3, 1500, 50, 1));
+    card_light[i].target = object;
 
     card_light[i].position.set( object.position.x, object.position.y + 500, object.position.z+1);
     card_light[i].castShadow = true;
@@ -120,6 +133,29 @@ function init(){
 
 
   }
+
+  //const light = new THREE.SpotLight( 0x009dff, 1);
+  static_lights.push(new THREE.SpotLight( 0xffffff, 10,2500));
+  static_lights[0].name = "Static_Lights"
+  static_lights[0].position.set(1000,500,scene.children[scene.children.findIndex((element) => element.name == tracker[0])].position.z+2000);
+  static_lights[0].target = scene.children[scene.children.findIndex((element) => element.name == tracker[0])];
+  static_lights[0].angle = 0.5;
+  scene.add(static_lights[0]);
+
+
+  static_lights.push(new THREE.SpotLight( 0xffffff, 10,2500));
+  static_lights[1].name = "Static_Lights"
+  static_lights[1].position.set(-1000,500,scene.children[scene.children.findIndex((element) => element.name == tracker[0])].position.z+2000);
+  static_lights[1].target = scene.children[scene.children.findIndex((element) => element.name == tracker[0])];
+  static_lights[1].angle = 0.5;
+  scene.add(static_lights[1]);
+
+
+  static_lights.push(new THREE.DirectionalLight(0x000000, 3));
+  static_lights[2].name = "Static_Lights"
+  static_lights[2].position.set(0,1000,-1000)
+  static_lights[2].target = scene.children[scene.children.findIndex((element) => element.name == tracker[0])];
+  scene.add(static_lights[2]);
 
   camera.position.z = 1400
   camera.position.y += 400
@@ -133,7 +169,7 @@ function card_switch_left(){
     requestAnimationFrame(card_switch_left)
     var radians = 2 * Math.PI / 360
     for(let i=0; i<scene.children.length; i++){
-      if(scene.children[i].name || scene.children[i].type == "SpotLight"){
+      if((scene.children[i].name || scene.children[i].type == "SpotLight") && scene.children[i].name !="Static_Lights"){
 
         var xSub = scene.children[i].position.x;
         var ySub = scene.children[i].position.z;
@@ -149,6 +185,13 @@ function card_switch_left(){
   }else{
     switchContent(tracker[0]);
     counter = 0;
+    static_lights.forEach(light => {
+      light.target = scene.children[scene.children.findIndex((element) => element.name == tracker[0])];
+      if(light.type == 'SpotLight'){
+        light.intensity = 1;
+      }
+
+    });
     return 0;
   }
 }
@@ -160,7 +203,7 @@ function card_switch_right(){
     var radians = -2 * Math.PI / 360
 
     for(let i=0; i<scene.children.length; i++){
-      if(scene.children[i].name || scene.children[i].type == "SpotLight"){
+      if((scene.children[i].name || scene.children[i].type == "SpotLight") && scene.children[i].name !="Static_Lights"){
         var xSub = scene.children[i].position.x;
         var ySub = scene.children[i].position.z;
 
@@ -175,6 +218,12 @@ function card_switch_right(){
   }else{
     switchContent(tracker[0]);
     counter = 0;
+    static_lights.forEach(light => {
+      light.target = scene.children[scene.children.findIndex((element) => element.name == tracker[0])];
+      if(light.type == 'SpotLight'){
+        light.intensity = 10;
+      }
+    });
     return 0;
   }
 }
@@ -223,7 +272,7 @@ function render(){
 
   for(let i=0; i<scene.children.length; i++){
     if(scene.children[i].name){
-      scene.children[i].rotation.y -= 0.05;
+      scene.children[i].rotation.y -= 0.02;
     }
 
 
@@ -235,7 +284,7 @@ function animate(){
 
   requestAnimationFrame( animate, renderer.domElement );
   render();
-  console.log(scene.children)
+
 
 
 

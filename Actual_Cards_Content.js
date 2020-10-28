@@ -7,7 +7,7 @@ export function cardContent(number){
   }else{
     let parent = document.getElementById('content');
     let container = document.createElement('div');
-    
+
     //let image_container = document.createElement('div');
     let image = document.createElement('img');
 
@@ -53,7 +53,7 @@ function addContent(number){
       desc.innerHTML = 'SmellySmellySmellySmellySmellySmellySmellySmellySmellySmellySmellySmelly';
     }
     if(number=="2"){
-      image.src = 'https://wallpaper-house.com/data/out/12/wallpaper2you_532523.jpg';
+      image.src = 'https://i.imgur.com/X30bDWy.jpeg';
       desc.innerHTML = 'Belly';
     }
     if(number=="3"){
