@@ -56,6 +56,24 @@ function onDocumentMouseClick(e){
     let exit_btn = document.getElementById('card_exit');
     exit_btn.addEventListener('click',closeContent);
   }
+  if(e.button == 0 &&
+    INTERSECTED != null &&
+    counter==0 &&
+    INTERSECTED.geometry.type == "BoxGeometry" &&
+    INTERSECTED.name != tracker[0]
+  ){
+    static_lights.forEach(light=>{
+      if(light.type != 'DirectionalLight'){
+        light.intensity = 0;
+      }
+    })
+    let index = tracker.findIndex(element => element == INTERSECTED.name)
+    for(let i=0;i<index;i++){
+      card_switch_right();
+      tracker.push(tracker.shift())
+    }
+
+  }
 
   //if its the other
 }
@@ -188,7 +206,7 @@ function card_switch_left(){
     static_lights.forEach(light => {
       light.target = scene.children[scene.children.findIndex((element) => element.name == tracker[0])];
       if(light.type == 'SpotLight'){
-        light.intensity = 1;
+        light.intensity = 10;
       }
 
     });

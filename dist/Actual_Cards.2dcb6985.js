@@ -42039,6 +42039,7 @@ function cardContent(number) {
     image.setAttribute('id', 'card_image');
     exit_button.setAttribute('id', 'card_exit');
     exit_icon.setAttribute('class', 'fa fa-close fa-2x');
+    exit_icon.setAttribute('style', 'color: #ffffff;');
     parent.appendChild(container);
     container.appendChild(exit_button);
     exit_button.appendChild(exit_icon);
@@ -42169,6 +42170,22 @@ function onDocumentMouseClick(e) {
     (0, _Actual_Cards_Content.cardContent)(INTERSECTED.name);
     var exit_btn = document.getElementById('card_exit');
     exit_btn.addEventListener('click', _Actual_Cards_Content.closeContent);
+  }
+
+  if (e.button == 0 && INTERSECTED != null && counter == 0 && INTERSECTED.geometry.type == "BoxGeometry" && INTERSECTED.name != tracker[0]) {
+    static_lights.forEach(function (light) {
+      if (light.type != 'DirectionalLight') {
+        light.intensity = 0;
+      }
+    });
+    var index = tracker.findIndex(function (element) {
+      return element == INTERSECTED.name;
+    });
+
+    for (var i = 0; i < index; i++) {
+      card_switch_right();
+      tracker.push(tracker.shift());
+    }
   } //if its the other
 
 }
@@ -42284,7 +42301,7 @@ function card_switch_left() {
       })];
 
       if (light.type == 'SpotLight') {
-        light.intensity = 1;
+        light.intensity = 10;
       }
     });
     return 0;

@@ -24,7 +24,7 @@ export function cardContent(number){
     exit_button.setAttribute('id','card_exit');
 
     exit_icon.setAttribute('class', 'fa fa-close fa-2x');
-
+    exit_icon.setAttribute('style', 'color: #ffffff;');
 
     parent.appendChild(container);
     container.appendChild(exit_button);
