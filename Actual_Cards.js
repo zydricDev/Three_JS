@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import {cardContent, switchContent, closeContent} from './Actual_Cards_Content.js'
-
+import {GLTFLoader} from './node_modules/three/examples/jsm/loaders/GLTFLoader.js'
 
 var camera, scene, raycaster, renderer;
 var mouse = new THREE.Vector2(), INTERSECTED;
@@ -8,7 +8,8 @@ var counter = 0;
 var tracker = [];
 var card_light = [];
 var static_lights = [];
-var card_textures = ['test.png'];
+var cardModels_p = [];
+var cardModels = [];
 
 function indicator(e){
   if(e){
@@ -46,12 +47,14 @@ function onDocumentMouseMove(event) {
 
 document.addEventListener( 'click', onDocumentMouseClick, false );
 function onDocumentMouseClick(e){
+
   if(e.button == 0 &&
     INTERSECTED != null &&
     counter==0 &&
     INTERSECTED.geometry.type == "BoxGeometry" &&
     INTERSECTED.name == tracker[0]
   ){
+
     cardContent(INTERSECTED.name);
     let exit_btn = document.getElementById('card_exit');
     exit_btn.addEventListener('click',closeContent);
@@ -75,7 +78,7 @@ function onDocumentMouseClick(e){
 
   }
 
-  //if its the other
+
 }
 
 
@@ -106,77 +109,91 @@ function init(){
   const plane_material = new THREE.MeshPhongMaterial({color: 0x00142b, side: THREE.DoubleSide});
   const plane = new THREE.Mesh(plane_geometry, plane_material);
   plane.receiveShadow = true;
-
-
   plane.rotation.x = Math.PI / 2;
   scene.add(plane);
 
 
-  const geometry = new THREE.BoxGeometry(300,500,1);
-
   let card_quantity = 5
   let radians = 1.6;
+  let loader = new GLTFLoader;
+
+  function loadModel(url){
+    return new Promise(resolve =>{
+      loader.load(url, resolve)
+    });
+  }
   for(let i=0; i<card_quantity; i++){
-    tracker.push(i+1);
-    var object = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({
-      color: 0x8da8c7,
-      map: new THREE.TextureLoader().load("test.png") }));
+    cardModels_p.push(loadModel('card.glb').then(result => {
 
-    object.receiveShadow = true;
-    object.castShadow = true;
-    var xSub = 800;
-    var ySub = 0;
+      cardModels.push(result.scene);
 
-    var xSub2 = xSub * Math.cos(radians) - Math.sin(radians) * ySub;
-    var ySub2 = xSub * Math.sin(radians) + Math.cos(radians) * ySub;
-
-    object.position.x = xSub2;
-    object.position.y = 300;
-    object.position.z = ySub2;
-    object.name = i+1;
-    object.rotation.z -= 0.5;
-    scene.add(object);
-    radians += 2*Math.PI / card_quantity;
-
-    card_light.push(new THREE.SpotLight( 0xffffff, 3, 1500, 50, 1));
-    card_light[i].target = object;
-
-    card_light[i].position.set( object.position.x, object.position.y + 500, object.position.z+1);
-    card_light[i].castShadow = true;
-
-
-
-
-    scene.add( card_light[i] );
-
-
+    }))
   }
 
-  //const light = new THREE.SpotLight( 0x009dff, 1);
-  static_lights.push(new THREE.SpotLight( 0xffffff, 10,2500));
-  static_lights[0].name = "Static_Lights"
-  static_lights[0].position.set(1000,500,scene.children[scene.children.findIndex((element) => element.name == tracker[0])].position.z+2000);
-  static_lights[0].target = scene.children[scene.children.findIndex((element) => element.name == tracker[0])];
-  static_lights[0].angle = 0.5;
-  scene.add(static_lights[0]);
+  Promise.all([
+    cardModels_p[0],
+    cardModels_p[1],
+    cardModels_p[2],
+    cardModels_p[3],
+    cardModels_p[4],
+
+  ]).then(() => {
+    for(let i=0; i<cardModels.length; i++){
+      tracker.push(i+1)
+      let xSub = 800;
+      let ySub = 0;
+
+      let xSub2 = xSub * Math.cos(radians) - Math.sin(radians) * ySub;
+      let ySub2 = xSub * Math.sin(radians) + Math.cos(radians) * ySub;
+
+      cardModels[i].children[0].scale.set(150,1000,150)
+      cardModels[i].children[0].rotation.set(Math.PI/2 , 0, 0)
+      cardModels[i].children[0].position.set(xSub2,300,ySub2)
+      cardModels[i].children[0].name = i+1;
+      cardModels[i].children[0].receiveShadow = true;
+      cardModels[i].children[0].castShadow = true;
+      cardModels[i].children[0].geometry.type = 'BoxGeometry';
+
+      radians += 2*Math.PI / card_quantity;
+
+      card_light.push(new THREE.SpotLight( 0xffffff, 3, 1500, 50, 1));
+      card_light[i].target = cardModels[i].children[0];
+
+      card_light[i].position.set(
+        xSub2,
+        300 + 500,
+        ySub2+1);
+
+      scene.add( card_light[i] );
+      scene.add(cardModels[i].children[0]);
+    }
+
+    static_lights.push(new THREE.SpotLight( 0xffffff, 10,2500));
+    static_lights[0].name = "Static_Lights"
+
+    static_lights[0].position.set(1000,500,scene.children[scene.children.findIndex((element) => element.name == tracker[0])].position.z+2100);
+    static_lights[0].target = scene.children[scene.children.findIndex((element) => element.name == tracker[0])];
+    static_lights[0].angle = 0.5;
+    scene.add(static_lights[0]);
 
 
-  static_lights.push(new THREE.SpotLight( 0xffffff, 10,2500));
-  static_lights[1].name = "Static_Lights"
-  static_lights[1].position.set(-1000,500,scene.children[scene.children.findIndex((element) => element.name == tracker[0])].position.z+2000);
-  static_lights[1].target = scene.children[scene.children.findIndex((element) => element.name == tracker[0])];
-  static_lights[1].angle = 0.5;
-  scene.add(static_lights[1]);
+    static_lights.push(new THREE.SpotLight( 0xffffff, 10,2500));
+    static_lights[1].name = "Static_Lights"
+    static_lights[1].position.set(-1000,500,scene.children[scene.children.findIndex((element) => element.name == tracker[0])].position.z+2100);
+    static_lights[1].target = scene.children[scene.children.findIndex((element) => element.name == tracker[0])];
+    static_lights[1].angle = 0.5;
+    scene.add(static_lights[1]);
 
+    static_lights.push(new THREE.DirectionalLight(0x000000, 3));
+    static_lights[2].name = "Static_Lights"
+    static_lights[2].position.set(0,1000,-1000)
+    static_lights[2].target = scene.children[scene.children.findIndex((element) => element.name == tracker[0])];
+    scene.add(static_lights[2]);
 
-  static_lights.push(new THREE.DirectionalLight(0x000000, 3));
-  static_lights[2].name = "Static_Lights"
-  static_lights[2].position.set(0,1000,-1000)
-  static_lights[2].target = scene.children[scene.children.findIndex((element) => element.name == tracker[0])];
-  scene.add(static_lights[2]);
+  })
 
-  camera.position.z = 1400
-  camera.position.y += 400
+  camera.position.z = 1300
+  camera.position.y += 380
 }
 
 
@@ -266,7 +283,7 @@ function render(){
   renderer.setClearColor (0xFFFFFF, 1);
 
   raycaster.setFromCamera( mouse, camera );
-  var intersects = raycaster.intersectObjects( scene.children );
+  var intersects = raycaster.intersectObjects( scene.children, true );
   if (intersects.length > 0) {
     var targetDistance = intersects[0].distance;
     if (INTERSECTED != intersects[0].object){
@@ -275,6 +292,7 @@ function render(){
       INTERSECTED = intersects[0].object;
 
       if(INTERSECTED.geometry.type == "BoxGeometry"){
+
         INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
         INTERSECTED.material.emissive.setHex( 0xff0000 );
 
@@ -290,7 +308,7 @@ function render(){
 
   for(let i=0; i<scene.children.length; i++){
     if(scene.children[i].name){
-      scene.children[i].rotation.y -= 0.02;
+      scene.children[i].rotation.z -= 0.02;
     }
 
 
