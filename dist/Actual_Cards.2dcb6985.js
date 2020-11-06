@@ -42033,6 +42033,8 @@ function cardContent(number) {
     var image = document.createElement('img');
     var desc_container = document.createElement('div');
     var desc = document.createElement('p');
+    var link = document.createElement('a');
+    var githubicon = document.createElement('i');
     var exit_button = document.createElement('button');
     var exit_icon = document.createElement('i');
     container.setAttribute('id', 'card_container');
@@ -42040,12 +42042,15 @@ function cardContent(number) {
     exit_button.setAttribute('id', 'card_exit');
     exit_icon.setAttribute('class', 'fa fa-close fa-2x');
     exit_icon.setAttribute('style', 'color: #ffffff;');
+    githubicon.setAttribute('class', 'fa fa-github fa-2x');
     parent.appendChild(container);
     container.appendChild(exit_button);
     exit_button.appendChild(exit_icon);
     container.appendChild(image);
     container.appendChild(desc_container);
     desc_container.appendChild(desc);
+    desc_container.appendChild(link);
+    link.appendChild(githubicon);
     addContent(number);
   }
 }
@@ -42054,30 +42059,41 @@ function addContent(number) {
   if (document.getElementById('card_container') !== null) {
     var image = document.getElementById('card_image');
     var desc = document.querySelector('p');
+    var link = document.querySelector('a');
 
     if (number == "1") {
       image.src = 'https://i.redd.it/pc00y2gufgb01.jpg';
-      desc.innerHTML = 'SmellySmellySmellySmellySmellySmellySmellySmellySmellySmellySmellySmelly';
+      desc.innerHTML = 'Laravel Ecommerce Simulator';
+      link.href = "https://www.google.com/";
+      link.target = "_blank";
     }
 
     if (number == "2") {
       image.src = 'https://i.imgur.com/X30bDWy.jpeg';
-      desc.innerHTML = 'Belly';
+      desc.innerHTML = 'Three.js Card Display';
+      link.href = "https://www.google.com/";
+      link.target = "_blank";
     }
 
     if (number == "3") {
       image.src = 'https://gameranx.com/wp-content/uploads/2016/06/Dishonored-2-394P-Wallpaper-3-700x394.jpg';
-      desc.innerHTML = 'Really';
+      desc.innerHTML = 'Transition Code';
+      link.href = "https://www.google.com/";
+      link.target = "_blank";
     }
 
     if (number == "4") {
       image.src = 'https://images2.alphacoders.com/678/678024.png';
-      desc.innerHTML = 'Jelly';
+      desc.innerHTML = 'Canvas Landing Page';
+      link.href = "https://www.google.com/";
+      link.target = "_blank";
     }
 
     if (number == "5") {
       image.src = 'https://images8.alphacoders.com/678/678023.jpg';
-      desc.innerHTML = 'Melly';
+      desc.innerHTML = 'TBA';
+      link.href = "https://www.google.com/";
+      link.target = "_blank";
     }
 
     tl.fromTo(image, 0.5, {
@@ -44807,7 +44823,7 @@ function onDocumentMouseClick(e) {
     exit_btn.addEventListener('click', _Actual_Cards_Content.closeContent);
   }
 
-  if (e.button == 0 && INTERSECTED != null && counter == 0 && INTERSECTED.geometry.type == "BoxGeometry" && INTERSECTED.name != tracker[0]) {
+  if (e.button == 0 && INTERSECTED != null && counter == 0 && INTERSECTED.geometry.type == "BoxGeometry" && INTERSECTED.name != tracker[0] && document.getElementById('card_exit') == null) {
     static_lights.forEach(function (light) {
       if (light.type != 'DirectionalLight') {
         light.intensity = 0;
@@ -44840,7 +44856,7 @@ function init() {
   document.body.appendChild(renderer.domElement);
   var plane_geometry = new THREE.PlaneBufferGeometry(4000, 4000, 8, 8);
   var plane_material = new THREE.MeshPhongMaterial({
-    color: 0x00142b,
+    color: 0x0f0f0f,
     side: THREE.DoubleSide
   });
   var plane = new THREE.Mesh(plane_geometry, plane_material);
@@ -45016,7 +45032,7 @@ function render() {
 
       INTERSECTED = intersects[0].object;
 
-      if (INTERSECTED.geometry.type == "BoxGeometry") {
+      if (INTERSECTED.geometry.type == "BoxGeometry" && document.getElementById('card_exit') == null) {
         INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
         INTERSECTED.material.emissive.setHex(0xff0000);
       }
@@ -45076,7 +45092,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59469" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62563" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
