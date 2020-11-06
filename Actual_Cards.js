@@ -11,6 +11,15 @@ var static_lights = [];
 var cardModels_p = [];
 var cardModels = [];
 
+var cardTextures = [
+'./card_textures/card1.png',
+'./card_textures/card2.png',
+'./card_textures/card3.png',
+'./card_textures/card1.png',
+'./card_textures/card1.png'
+];
+
+
 function indicator(e){
   if(e){
     static_lights.forEach(light=>{
@@ -117,6 +126,7 @@ function init(){
   let card_quantity = 5
   let radians = 1.6;
   let loader = new GLTFLoader;
+  var textureLoader = new THREE.TextureLoader();
 
   function loadModel(url){
     return new Promise(resolve =>{
@@ -146,6 +156,11 @@ function init(){
 
       let xSub2 = xSub * Math.cos(radians) - Math.sin(radians) * ySub;
       let ySub2 = xSub * Math.sin(radians) + Math.cos(radians) * ySub;
+
+      var map = textureLoader.load(cardTextures[i]);
+      map.encoding = THREE.sRGBEncoding;
+	    map.flipY = false;
+      cardModels[i].children[0].material.map = map;
 
       cardModels[i].children[0].scale.set(150,1000,150)
       cardModels[i].children[0].rotation.set(Math.PI/2 , 0, 0)

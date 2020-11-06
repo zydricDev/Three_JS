@@ -42065,37 +42065,33 @@ function addContent(number) {
       image.src = 'https://i.redd.it/pc00y2gufgb01.jpg';
       desc.innerHTML = 'Laravel Ecommerce Simulator';
       link.href = "https://www.google.com/";
-      link.target = "_blank";
     }
 
     if (number == "2") {
       image.src = 'https://i.imgur.com/X30bDWy.jpeg';
       desc.innerHTML = 'Three.js Card Display';
       link.href = "https://www.google.com/";
-      link.target = "_blank";
     }
 
     if (number == "3") {
       image.src = 'https://gameranx.com/wp-content/uploads/2016/06/Dishonored-2-394P-Wallpaper-3-700x394.jpg';
-      desc.innerHTML = 'Transition Code';
+      desc.innerHTML = 'Canvas Landing Page';
       link.href = "https://www.google.com/";
-      link.target = "_blank";
     }
 
     if (number == "4") {
       image.src = 'https://images2.alphacoders.com/678/678024.png';
-      desc.innerHTML = 'Canvas Landing Page';
+      desc.innerHTML = 'TBA';
       link.href = "https://www.google.com/";
-      link.target = "_blank";
     }
 
     if (number == "5") {
       image.src = 'https://images8.alphacoders.com/678/678023.jpg';
       desc.innerHTML = 'TBA';
       link.href = "https://www.google.com/";
-      link.target = "_blank";
     }
 
+    link.target = "_blank";
     tl.fromTo(image, 0.5, {
       opacity: 0,
       top: "-1000px"
@@ -44783,6 +44779,7 @@ var card_light = [];
 var static_lights = [];
 var cardModels_p = [];
 var cardModels = [];
+var cardTextures = ['./card_textures/card1.png', './card_textures/card2.png', './card_textures/card3.png', './card_textures/card1.png', './card_textures/card1.png'];
 
 function indicator(e) {
   if (e) {
@@ -44866,6 +44863,7 @@ function init() {
   var card_quantity = 5;
   var radians = 1.6;
   var loader = new _GLTFLoader.GLTFLoader();
+  var textureLoader = new THREE.TextureLoader();
 
   function loadModel(url) {
     return new Promise(function (resolve) {
@@ -44886,6 +44884,10 @@ function init() {
       var ySub = 0;
       var xSub2 = xSub * Math.cos(radians) - Math.sin(radians) * ySub;
       var ySub2 = xSub * Math.sin(radians) + Math.cos(radians) * ySub;
+      var map = textureLoader.load(cardTextures[_i]);
+      map.encoding = THREE.sRGBEncoding;
+      map.flipY = false;
+      cardModels[_i].children[0].material.map = map;
 
       cardModels[_i].children[0].scale.set(150, 1000, 150);
 
@@ -45092,7 +45094,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62563" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61311" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
