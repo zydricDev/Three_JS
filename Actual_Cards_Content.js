@@ -59,39 +59,34 @@ function addContent(number){
     if(number=="1"){
       image.src = 'https://i.redd.it/pc00y2gufgb01.jpg';
       desc.innerHTML = 'Laravel Ecommerce Simulator';
-
       link.href = "https://www.google.com/";
-      link.target = "_blank";
 
     }
     if(number=="2"){
       image.src = 'https://i.imgur.com/X30bDWy.jpeg';
       desc.innerHTML = 'Three.js Card Display';
-
       link.href = "https://www.google.com/";
-      link.target = "_blank";
+
     }
     if(number=="3"){
       image.src = 'https://gameranx.com/wp-content/uploads/2016/06/Dishonored-2-394P-Wallpaper-3-700x394.jpg';
-      desc.innerHTML = 'Transition Code';
-
+      desc.innerHTML = 'Canvas Landing Page';
       link.href = "https://www.google.com/";
-      link.target = "_blank";
+
     }
     if(number=="4"){
       image.src = 'https://images2.alphacoders.com/678/678024.png';
-      desc.innerHTML = 'Canvas Landing Page';
-
+      desc.innerHTML = 'TBA';
       link.href = "https://www.google.com/";
-      link.target = "_blank";
+
     }
     if(number=="5"){
       image.src = 'https://images8.alphacoders.com/678/678023.jpg';
       desc.innerHTML = 'TBA';
-    
       link.href = "https://www.google.com/";
-      link.target = "_blank";
+
     }
+    link.target = "_blank";
 
     tl.fromTo(image, 0.5, {opacity: 0, top: "-1000px"},{opacity: 1, top: "0px"})
     .fromTo(desc.parentNode, 0.5, {opacity: 0, bottom: "-1000px"},{opacity: 1, bottom: "0px"},"-=0.5")
