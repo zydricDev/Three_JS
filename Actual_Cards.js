@@ -63,7 +63,8 @@ function onDocumentMouseClick(e){
     INTERSECTED != null &&
     counter==0 &&
     INTERSECTED.geometry.type == "BoxGeometry" &&
-    INTERSECTED.name != tracker[0]
+    INTERSECTED.name != tracker[0] &&
+    document.getElementById('card_exit') == null
   ){
     static_lights.forEach(light=>{
       if(light.type != 'DirectionalLight'){
@@ -106,7 +107,7 @@ function init(){
 
 
   const plane_geometry = new THREE.PlaneBufferGeometry(4000,4000,8,8);
-  const plane_material = new THREE.MeshPhongMaterial({color: 0x00142b, side: THREE.DoubleSide});
+  const plane_material = new THREE.MeshPhongMaterial({color: 0x0f0f0f, side: THREE.DoubleSide});
   const plane = new THREE.Mesh(plane_geometry, plane_material);
   plane.receiveShadow = true;
   plane.rotation.x = Math.PI / 2;
@@ -291,7 +292,7 @@ function render(){
       if (INTERSECTED && INTERSECTED.material.emissive){ INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex); }
       INTERSECTED = intersects[0].object;
 
-      if(INTERSECTED.geometry.type == "BoxGeometry"){
+      if(INTERSECTED.geometry.type == "BoxGeometry" && document.getElementById('card_exit') == null){
 
         INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
         INTERSECTED.material.emissive.setHex( 0xff0000 );
