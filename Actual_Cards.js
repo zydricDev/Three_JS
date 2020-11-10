@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import {cardContent, switchContent, closeContent} from './Actual_Cards_Content.js'
 import {GLTFLoader} from './node_modules/three/examples/jsm/loaders/GLTFLoader.js'
 
+
 var camera, scene, raycaster, renderer;
 var mouse = new THREE.Vector2(), INTERSECTED;
 var counter = 0;
@@ -15,7 +16,7 @@ var cardTextures = [
 './card_textures/card1.png',
 './card_textures/card2.png',
 './card_textures/card3.png',
-'./card_textures/card1.png',
+'./card_textures/card4.png',
 './card_textures/card1.png'
 ];
 
@@ -28,7 +29,8 @@ function indicator(e){
       }
 
     })
-    if(e.path[0].id == 'left-btn' && counter == 0){
+
+    if(e.path[1].id == 'left-btn' && counter == 0){
       card_switch_left();
       tracker.unshift(tracker.pop());
     }else if (counter == 0){
@@ -42,6 +44,7 @@ function indicator(e){
 
 let left_btn = document.getElementById('left-btn');
 let right_btn = document.getElementById('right-btn');
+
 
 left_btn.addEventListener('click', indicator);
 right_btn.addEventListener('click', indicator);
@@ -106,13 +109,15 @@ function init(){
 
   raycaster = new THREE.Raycaster();
 
+  let location = document.getElementById('content');
+
   renderer = new THREE.WebGLRenderer( { antialias: true } );
   renderer.setPixelRatio( window.devicePixelRatio );
   renderer.setSize( window.innerWidth, window.innerHeight );
 
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.BasicShadowMap;
-  document.body.appendChild( renderer.domElement );
+  location.appendChild( renderer.domElement );
 
 
   const plane_geometry = new THREE.PlaneBufferGeometry(4000,4000,8,8);
@@ -210,6 +215,8 @@ function init(){
 
   camera.position.z = 1300
   camera.position.y += 380
+
+
 }
 
 

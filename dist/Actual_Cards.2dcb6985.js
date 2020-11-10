@@ -8587,17 +8587,17 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
   clone: function () {
     /*
      // Handle primitives
-    		 const parameters = this.parameters;
-    		 if ( parameters !== undefined ) {
-    		 const values = [];
-    		 for ( const key in parameters ) {
-    		 values.push( parameters[ key ] );
-    		 }
-    		 const geometry = Object.create( this.constructor.prototype );
+    	 const parameters = this.parameters;
+    	 if ( parameters !== undefined ) {
+    	 const values = [];
+    	 for ( const key in parameters ) {
+    	 values.push( parameters[ key ] );
+    	 }
+    	 const geometry = Object.create( this.constructor.prototype );
      this.constructor.apply( geometry, values );
      return geometry;
-    		 }
-    		 return new this.constructor().copy( this );
+    	 }
+    	 return new this.constructor().copy( this );
      */
     return new BufferGeometry().copy(this);
   },
@@ -20799,17 +20799,17 @@ Geometry.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
   clone: function () {
     /*
      // Handle primitives
-    		 const parameters = this.parameters;
-    		 if ( parameters !== undefined ) {
-    		 const values = [];
-    		 for ( const key in parameters ) {
-    		 values.push( parameters[ key ] );
-    		 }
-    		 const geometry = Object.create( this.constructor.prototype );
+    	 const parameters = this.parameters;
+    	 if ( parameters !== undefined ) {
+    	 const values = [];
+    	 for ( const key in parameters ) {
+    	 values.push( parameters[ key ] );
+    	 }
+    	 const geometry = Object.create( this.constructor.prototype );
      this.constructor.apply( geometry, values );
      return geometry;
-    		 }
-    		 return new this.constructor().copy( this );
+    	 }
+    	 return new this.constructor().copy( this );
      */
     return new Geometry().copy(this);
   },
@@ -33653,15 +33653,15 @@ class PointLightHelper extends Mesh {
     // TODO: delete this comment?
     const distanceGeometry = new THREE.IcosahedronBufferGeometry( 1, 2 );
     const distanceMaterial = new THREE.MeshBasicMaterial( { color: hexColor, fog: false, wireframe: true, opacity: 0.1, transparent: true } );
-    	this.lightSphere = new THREE.Mesh( bulbGeometry, bulbMaterial );
+    this.lightSphere = new THREE.Mesh( bulbGeometry, bulbMaterial );
     this.lightDistance = new THREE.Mesh( distanceGeometry, distanceMaterial );
-    	const d = light.distance;
-    	if ( d === 0.0 ) {
-    		this.lightDistance.visible = false;
-    	} else {
-    		this.lightDistance.scale.set( d, d, d );
-    	}
-    	this.add( this.lightDistance );
+    const d = light.distance;
+    if ( d === 0.0 ) {
+    	this.lightDistance.visible = false;
+    } else {
+    	this.lightDistance.scale.set( d, d, d );
+    }
+    this.add( this.lightDistance );
     */
   }
 
@@ -33678,12 +33678,12 @@ class PointLightHelper extends Mesh {
     }
     /*
     const d = this.light.distance;
-    		if ( d === 0.0 ) {
-    			this.lightDistance.visible = false;
-    		} else {
-    			this.lightDistance.visible = true;
+    	if ( d === 0.0 ) {
+    		this.lightDistance.visible = false;
+    	} else {
+    		this.lightDistance.visible = true;
     	this.lightDistance.scale.set( d, d, d );
-    		}
+    	}
     */
 
   }
@@ -34095,7 +34095,7 @@ class BoxHelper extends LineSegments {
     1/___0/|
     | 6__|_7
     2/___3/
-    		0: max.x, max.y, max.z
+    	0: max.x, max.y, max.z
     1: min.x, max.y, max.z
     2: min.x, min.y, max.z
     3: max.x, min.y, max.z
@@ -42028,29 +42028,38 @@ function cardContent(number) {
     return 0;
   } else {
     var parent = document.getElementById('content');
-    var container = document.createElement('div'); //let image_container = document.createElement('div');
-
+    var container = document.createElement('div');
     var image = document.createElement('img');
     var desc_container = document.createElement('div');
+    desc_container.setAttribute('id', 'd_container');
     var desc = document.createElement('p');
+    desc.setAttribute('id', 'c_desc');
     var link = document.createElement('a');
+    link.setAttribute('id', 'c_link');
+    var siteLink = document.createElement('a');
+    siteLink.setAttribute('id', 'c_slink');
+    var linkBundle = document.createElement('div');
     var githubicon = document.createElement('i');
+    var webicon = document.createElement('i');
     var exit_button = document.createElement('button');
     var exit_icon = document.createElement('i');
     container.setAttribute('id', 'card_container');
     image.setAttribute('id', 'card_image');
     exit_button.setAttribute('id', 'card_exit');
     exit_icon.setAttribute('class', 'fa fa-close fa-2x');
-    exit_icon.setAttribute('style', 'color: #ffffff;');
     githubicon.setAttribute('class', 'fa fa-github fa-2x');
+    webicon.setAttribute('class', 'fas fa-globe-americas fa-2x');
     parent.appendChild(container);
     container.appendChild(exit_button);
     exit_button.appendChild(exit_icon);
     container.appendChild(image);
     container.appendChild(desc_container);
     desc_container.appendChild(desc);
-    desc_container.appendChild(link);
+    desc_container.appendChild(linkBundle);
+    linkBundle.appendChild(link);
+    linkBundle.appendChild(siteLink);
     link.appendChild(githubicon);
+    siteLink.appendChild(webicon);
     addContent(number);
   }
 }
@@ -42058,40 +42067,47 @@ function cardContent(number) {
 function addContent(number) {
   if (document.getElementById('card_container') !== null) {
     var image = document.getElementById('card_image');
-    var desc = document.querySelector('p');
-    var link = document.querySelector('a');
+    var desc = document.getElementById('c_desc');
+    var link = document.getElementById('c_link');
+    var site_link = document.getElementById('c_slink');
 
     if (number == "1") {
       image.src = 'https://i.redd.it/pc00y2gufgb01.jpg';
       desc.innerHTML = 'Laravel Ecommerce Simulator';
-      link.href = "https://www.google.com/";
+      link.href = "http://google.com/";
+      site_link.href = "http://ecom-example.zdev-devsite.com/";
     }
 
     if (number == "2") {
       image.src = 'https://i.imgur.com/X30bDWy.jpeg';
       desc.innerHTML = 'Three.js Card Display';
       link.href = "https://www.google.com/";
+      site_link.href = "http://zdev-devsite.com/work.html";
     }
 
     if (number == "3") {
       image.src = 'https://gameranx.com/wp-content/uploads/2016/06/Dishonored-2-394P-Wallpaper-3-700x394.jpg';
       desc.innerHTML = 'Canvas Landing Page';
       link.href = "https://www.google.com/";
+      site_link.href = "http://zdev-devsite.com";
     }
 
     if (number == "4") {
       image.src = 'https://images2.alphacoders.com/678/678024.png';
       desc.innerHTML = 'TBA';
       link.href = "https://www.google.com/";
+      site_link.href = "http://ecom-example.zdev-devsite.com/";
     }
 
     if (number == "5") {
       image.src = 'https://images8.alphacoders.com/678/678023.jpg';
       desc.innerHTML = 'TBA';
       link.href = "https://www.google.com/";
+      site_link.href = "http://ecom-example.zdev-devsite.com/";
     }
 
     link.target = "_blank";
+    site_link.target = "_blank";
     tl.fromTo(image, 0.5, {
       opacity: 0,
       top: "-1000px"
@@ -44779,7 +44795,7 @@ var card_light = [];
 var static_lights = [];
 var cardModels_p = [];
 var cardModels = [];
-var cardTextures = ['./card_textures/card1.png', './card_textures/card2.png', './card_textures/card3.png', './card_textures/card1.png', './card_textures/card1.png'];
+var cardTextures = ['./card_textures/card1.png', './card_textures/card2.png', './card_textures/card3.png', './card_textures/card4.png', './card_textures/card1.png'];
 
 function indicator(e) {
   if (e) {
@@ -44789,7 +44805,7 @@ function indicator(e) {
       }
     });
 
-    if (e.path[0].id == 'left-btn' && counter == 0) {
+    if (e.path[1].id == 'left-btn' && counter == 0) {
       card_switch_left();
       tracker.unshift(tracker.pop());
     } else if (counter == 0) {
@@ -44843,6 +44859,7 @@ function init() {
   scene.add(new THREE.AmbientLight(0xffffff, 0.3));
   camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 5000);
   raycaster = new THREE.Raycaster();
+  var location = document.getElementById('content');
   renderer = new THREE.WebGLRenderer({
     antialias: true
   });
@@ -44850,7 +44867,7 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.BasicShadowMap;
-  document.body.appendChild(renderer.domElement);
+  location.appendChild(renderer.domElement);
   var plane_geometry = new THREE.PlaneBufferGeometry(4000, 4000, 8, 8);
   var plane_material = new THREE.MeshPhongMaterial({
     color: 0x0f0f0f,
@@ -45094,7 +45111,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61311" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64857" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
